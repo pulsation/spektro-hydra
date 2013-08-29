@@ -2,7 +2,8 @@
  * This file is a very simple example of a class declaration in Dojo. It defines the `app/Dialog` module as a new
  * class that extends a dijit Dialog and overrides the default title and content properties.
  */
-define([ 'dojo/_base/declare', 'dijit/layout/BorderContainer', "dijit/layout/ContentPane" ], function (declare, BorderContainer, ContentPane) {
+
+define([ 'dojo/_base/declare', 'dijit/layout/BorderContainer', "dijit/layout/ContentPane"], function (declare, BorderContainer, ContentPane) {
 	return declare(BorderContainer, {
     id: "borderContainer",
     postCreate: function () {

@@ -39,8 +39,8 @@ define([ 'dojo/has', 'require' ], function (has, require) {
 		 * require just `dojo/domReady`, it would load that module just like any other module, without the special
 		 * plugin functionality.
 		 */
-		require([ './MainLayout', 'dojo/domReady!' ], function (Dialog) {
-			app.dialog = new Dialog().placeAt(document.body);
+		require([ './MainLayout', 'dojo/domReady!' ], function (MainLayout) {
+			app.dialog = new MainLayout().placeAt(document.body);
 
 			// It is important to remember to always call startup on widgets after you have added them to the DOM.
 			// It will not hurt if you do it twice, but things will often not work right if you forget to do it.

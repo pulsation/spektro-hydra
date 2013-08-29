@@ -10,3 +10,6 @@
 [submodule "src/util"]
 	path = src/util
 	url = https://github.com/dojo/util.git
+[submodule "src/pouchdb"]
+	path = src/pouchdb
+	url = https://github.com/daleharvey/pouchdb.git
