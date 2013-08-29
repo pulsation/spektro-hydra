@@ -3,15 +3,17 @@
  * class that extends a dijit Dialog and overrides the default title and content properties.
  */
 
-define([ 'dojo/_base/declare', 'dijit/layout/BorderContainer', "dijit/layout/ContentPane", "pouchdb/dist/pouchdb-nightly.js"], function (declare, BorderContainer, ContentPane, PouchDB) {
+define([ 'dojo/_base/declare', 'dijit/layout/BorderContainer' , 'dijit/layout/ContentPane' , './TopPane' ],
+       function (declare, BorderContainer, ContentPane, TopPane) {
 	return declare(BorderContainer, {
     id: "borderContainer",
     postCreate: function () {
-      this.addChild(new ContentPane({region: "top", content: "[Dropdown]Device [Button]Sensors [Button]Location"}));
+      this.inherited(arguments);
+
+      this.addChild(new TopPane({id: "topPane", region: "top"}));
       this.addChild(new ContentPane({region: "leading", content: "[Dropdown]Sensor<br /> [Dropdown]Period"}));
       this.addChild(new ContentPane({region: "center", content: "[Canvas]Graph"}));
       this.addChild(new ContentPane({region: "bottom", content: "Spektro Hydra v0.0"}));
-      var db = new Pouch("pouchtest");
     }
 	});
 });
