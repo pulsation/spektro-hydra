@@ -1,6 +1,7 @@
 define(['dojo/_base/declare', 'dijit/registry',  'dijit/form/Select', 'dojo/store/Memory', "dojo/data/ObjectStore", "dojo/store/Observable", "./DevicesStore"],
   function(declare, registry, Select, Memory, ObjectStore, Observable, DevicesStore) {
     return declare(Select, {
+      labelAttr: "model",
       postCreate: function () {
         this.inherited(arguments);
 
@@ -12,8 +13,7 @@ define(['dojo/_base/declare', 'dijit/registry',  'dijit/form/Select', 'dojo/stor
         );
         this.setStore(
           new ObjectStore({
-            objectStore: store,
-            labelProperty: "model"
+            objectStore: store
           })
         );
       }
