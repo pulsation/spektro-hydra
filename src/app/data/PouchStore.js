@@ -1,8 +1,8 @@
 /**
  * Very simple dojo store for PouchDB.
  */
-define(["dojo/store/util/QueryResults", "dojo/_base/declare", "dojo/_base/lang", "dojo/request", "dojo/store/util/SimpleQueryEngine", "dojo/Deferred", "http://download.pouchdb.com/pouchdb-nightly.js"],
-        function(QueryResults, declare, lang, request, SimpleQueryEngine, Deferred){
+define(["dojo/store/util/QueryResults", "dojo/_base/declare", "dojo/_base/lang", "dojo/store/util/SimpleQueryEngine", "dojo/Deferred", "http://download.pouchdb.com/pouchdb-nightly.js"],
+        function(QueryResults, declare, lang, SimpleQueryEngine, Deferred){
  
     //  Declare the initial store
     return declare(null, {
