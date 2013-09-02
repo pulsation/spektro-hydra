@@ -15,9 +15,9 @@ define([
           this.sensorChart.addPlot("default", {type: Lines});
           this.sensorChart.addAxis("x");
           this.sensorChart.addAxis("y", {vertical: true});
-          this.sensorChart.addSeries("Series 1", [1, 2, 2, 3, 4, 5, 5, 7]);
-          this.sensorChart.addSeries("Series 2", [1, 2, 2, 3, 4, 5, 5, 7]);
-          this.sensorChart.addSeries("Series 3", [1, 2, 2, 3, 4, 5, 5, 7]);
+          this.sensorChart.addSeries("Series 1", [], {stroke: {color: "blue"}});
+          this.sensorChart.addSeries("Series 2", [], {stroke: {color: "green"}});
+          this.sensorChart.addSeries("Series 3", [], {stroke: {color: "purple"}});
           this.sensorChart.render();
         },
 
@@ -30,35 +30,31 @@ define([
             target: "https://www.pulsation.eu:6984/alarmsandbox"
           });
 
+          var updateChart = function(docs) {
+            var values = [[],[],[]];
+            docs.forEach(function (element) {
+              values[0].push(element.values[0]);
+              if (element.values[1]) {
+                values[1].push(element.values[1]);
+              }
+              if (element.values[2]) {
+                values[2].push(element.values[2]);
+              }
+            });
+            self.sensorChart.updateSeries("Series 1", values[0]);
+            self.sensorChart.updateSeries("Series 2", values[1]);
+            self.sensorChart.updateSeries("Series 3", values[2]);
+            self.sensorChart.render();
+          };
+
           topic.subscribe("deviceId", function(deviceId) {
             console.log("Device id set to "+ deviceId);
-            var results = store.query({});
-            results.then(function (docs) {
-              var values = [[],[],[]];
-              docs.forEach(function (element) {
-                values[0].push(element.values[0]);
-                if (element.values[1]) {
-                  values[1].push(element.values[1]);
-                }
-                if (element.values[2]) {
-                  values[2].push(element.values[2]);
-                }
-              });
-              self.sensorChart.updateSeries("Series 1", values[0]);
-              self.sensorChart.updateSeries("Series 2", values[1]);
-              self.sensorChart.updateSeries("Series 3", values[2]);
-              self.sensorChart.render();
-            });
+            store.query({}).then(updateChart);
           });
 
           topic.subscribe("sensorId", function(sensorId) {
             console.log("Sensor id set to "+ sensorId);
-            var results = store.query({});
-            results.then(function (value) {
-              console.log("Promise executed.");
-              console.log(value);
-            });
-            //console.log(store.data);
+            store.query({}).then(updateChart);
           });
         }
     });

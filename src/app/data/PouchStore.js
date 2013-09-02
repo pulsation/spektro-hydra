@@ -71,7 +71,11 @@ define(["dojo/store/util/QueryResults", "dojo/_base/declare", "dojo/_base/lang",
                 if (err) {
                   deferred.reject(err);
                 } else {
-                  deferred.resolve(QueryResults(self.queryEngine(query, options))(self.mapResponse(response)));
+                  deferred.resolve(
+                    QueryResults(
+                      self.queryEngine(query, options))(self.mapResponse(response)
+                    )
+                  );
                 }
               };
 
