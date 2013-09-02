@@ -2,10 +2,10 @@ define (["dojo/_base/declare", "../data/PouchStore"],
         function(declare, PouchStore) {
           return declare(PouchStore, {
             pouchQuery:  {
-              view: "selector/sensors",
+              view: "data/by_sensor",
               options: {
-                group: true,
-                reduce: true
+                startkey: ["356216040203533",1,null],
+                endkey: ["356216040203533",2,null]
               }
             },
           }
