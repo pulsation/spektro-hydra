@@ -1,5 +1,5 @@
-define(['dojo/_base/declare', 'dijit/form/Select', "dojo/data/ObjectStore", "dojo/store/Observable", "./SensorsStore"],
-  function(declare, Select, ObjectStore, Observable, SensorsStore) {
+define(['dojo/_base/declare', 'dijit/form/Select', "dojo/data/ObjectStore", "dojo/store/Observable", "./SensorsStore", "dojo/topic"],
+  function(declare, Select, ObjectStore, Observable, SensorsStore, topic) {
     return declare(Select, {
       labelAttr: "name",
       postCreate: function () {
@@ -16,6 +16,10 @@ define(['dojo/_base/declare', 'dijit/form/Select', "dojo/data/ObjectStore", "doj
             objectStore: store
           })
         );
+
+        this.on("change", function () {
+          topic.publish("sensorId", this.get("value"));
+        });
       }
     });
   });
