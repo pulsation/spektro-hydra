@@ -4,8 +4,7 @@ define (["dojo/_base/declare", "../data/PouchStore"],
             pouchQuery:  {
               view: "data/by_sensor",
               options: {
-                startkey: ["356216040203533",1,null],
-                endkey: ["356216040203533",2,null]
+                inclusive_end : false
               }
             },
           }

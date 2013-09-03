@@ -36,6 +36,12 @@ define(["dojo/store/util/QueryResults", "dojo/_base/declare", "dojo/_base/lang",
 
         /**
          * Associate the store to a particular view.
+         *
+         * structure:
+         *
+         * options: Options to pass to the PouchDB query
+         * view: pouch query view
+         *
          */
         setPouchQuery: function(query) {
           if (query) {
@@ -61,10 +67,18 @@ define(["dojo/store/util/QueryResults", "dojo/_base/declare", "dojo/_base/lang",
         /**
          * Query documents. If a view is associated to the store, returns
          * the view result.
+         *
+         * query is the standard dojo query
+         * options are the standard dojo query options
+         * pouchQueryExt are the pouchdb query specs that will be mixed in with 
+         * the store instance's pouchQuery
+         *
          */
-        query: function(query, options){
+        query: function(query, options, pouchQueryExt){
           var deferred = new Deferred(),
               self = this,
+
+              pouchQuery = lang.mixin(this.pouchQuery, pouchQueryExt || {}),
 
               // Apply query engine on returned documents
               callback = function (err, response) {
@@ -72,9 +86,7 @@ define(["dojo/store/util/QueryResults", "dojo/_base/declare", "dojo/_base/lang",
                   deferred.reject(err);
                 } else {
                   deferred.resolve(
-                    QueryResults(
-                      self.queryEngine(query, options))(self.mapResponse(response)
-                    )
+                    QueryResults(self.queryEngine(query, options))(self.mapResponse(response))
                   );
                 }
               };
@@ -82,7 +94,7 @@ define(["dojo/store/util/QueryResults", "dojo/_base/declare", "dojo/_base/lang",
           if (this.pouchQuery === null) {
             this.pouch.allDocs({include_docs: true}, callback);
           } else {
-            data = this.pouch.query(this.pouchQuery.view, this.pouchQuery.options, callback);
+            data = this.pouch.query(pouchQuery.view, pouchQuery.options, callback);
           }
           return deferred;
         },

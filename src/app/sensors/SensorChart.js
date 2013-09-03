@@ -3,10 +3,14 @@
 define([
     "dojo/_base/declare", "dojo/dom-construct", "dojo/ready", "dojo/_base/window",
     "dijit/_WidgetBase", "dojox/charting/Chart", "dojox/charting/plot2d/Lines", "dojox/charting/axis2d/Default", "dojo/topic",
-    "./SensorDataStore", "dojo/store/Observable"
-], function(declare, domConstruct, ready, win, _WidgetBase, Chart, Lines, Default, topic, SensorDataStore, Observable){
+    "./SensorDataStore"
+], function(declare, domConstruct, ready, win, _WidgetBase, Chart, Lines, Default, topic, SensorDataStore){
 
     return declare("SensorChart", [_WidgetBase], {
+
+        deviceId: null,
+        sensorId: null,
+        
         buildRendering: function(){
           // create the DOM for this widget
           this.domNode = domConstruct.create("div");
@@ -30,6 +34,18 @@ define([
             target: "https://www.pulsation.eu:6984/alarmsandbox"
           });
 
+          var queryDb = function() {
+            if ((this.deviceId !== null) && (this.sensorId !== null)) {
+              return store.query({}, {}, {
+                options: {
+                  startkey: [self.deviceId, self.sensorId, null],
+                  endkey: [self.deviceId, self.sensorId + 1, null],
+                  inclusive_end : false
+                }
+              });
+            }
+          };
+
           var updateChart = function(docs) {
             var values = [[],[],[]];
             docs.forEach(function (element) {
@@ -49,12 +65,20 @@ define([
 
           topic.subscribe("deviceId", function(deviceId) {
             console.log("Device id set to "+ deviceId);
-            store.query({}).then(updateChart);
+            self.deviceId = deviceId;
+/*            store.query({}, {}, {
+              options: {
+                startkey: [self.deviceId, self.sensorId, null],
+                endkey: [self.deviceId, self.sensorId + 1, null]
+              }
+            }).then(updateChart);*/
+            queryDb().then(updateChart);
           });
 
           topic.subscribe("sensorId", function(sensorId) {
             console.log("Sensor id set to "+ sensorId);
-            store.query({}).then(updateChart);
+            self.sensorId = sensorId;
+            queryDb().then(updateChart);
           });
         }
     });
