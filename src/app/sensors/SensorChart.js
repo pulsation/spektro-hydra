@@ -53,13 +53,10 @@ define([
         var updateChart = function(docs) {
           var values = [[],[],[]];
           docs.forEach(function (element) {
-            values[0].push(element.values[0]);
-            if (element.values[1]) {
-              values[1].push(element.values[1]);
-            }
-            if (element.values[2]) {
-              values[2].push(element.values[2]);
-            }
+
+            element.values.forEach(function(item, index) {
+              values[index].push(item);
+            });
           });
           self.sensorChart.updateSeries("Series 1", values[0]);
           self.sensorChart.updateSeries("Series 2", values[1]);
