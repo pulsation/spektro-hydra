@@ -3,8 +3,8 @@
  * class that extends a dijit Dialog and overrides the default title and content properties.
  */
 
-define([ 'dojo/_base/declare', 'dijit/layout/BorderContainer' , 'dijit/layout/ContentPane' , './TopPane', './LeadingPane', "./CenterPane" ],
-       function (declare, BorderContainer, ContentPane, TopPane, LeadingPane, CenterPane) {
+define([ 'dojo/_base/declare', 'dijit/layout/BorderContainer' , 'dijit/layout/ContentPane' , './TopPane', './LeadingPane', "./CenterPane", "./sensors/SensorChart" ],
+       function (declare, BorderContainer, ContentPane, TopPane, LeadingPane, CenterPane, SensorChart) {
 	return declare(BorderContainer, {
     id: "borderContainer",
     postCreate: function () {

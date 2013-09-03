@@ -8,78 +8,76 @@ define([
 
     return declare("SensorChart", [_WidgetBase], {
 
-        deviceId: null,
-        sensorId: null,
-        
-        buildRendering: function(){
-          // create the DOM for this widget
-          this.domNode = domConstruct.create("div");
+      resize: function(box){
+  	    this.sensorChart.resize.apply(this.sensorChart, arguments);
+    	},
 
-          this.sensorChart = new Chart(this.domNode);
-          this.sensorChart.addPlot("default", {type: Lines});
-          this.sensorChart.addAxis("x");
-          this.sensorChart.addAxis("y", {vertical: true});
-          this.sensorChart.addSeries("Series 1", [], {stroke: {color: "blue"}});
-          this.sensorChart.addSeries("Series 2", [], {stroke: {color: "green"}});
-          this.sensorChart.addSeries("Series 3", [], {stroke: {color: "purple"}});
-          this.sensorChart.render();
-        },
+      deviceId: null,
+      sensorId: null,
+      
+      buildRendering: function(){
+        // create the DOM for this widget
+        this.domNode = domConstruct.create("div");
 
-        postCreate: function () {
-          var self = this;
+        this.sensorChart = new Chart(this.domNode);
+        this.sensorChart.addPlot("default", {type: Lines});
+        this.sensorChart.addAxis("x");
+        this.sensorChart.addAxis("y", {vertical: true});
+        this.sensorChart.addSeries("Series 1", [], {stroke: {color: "blue"}});
+        this.sensorChart.addSeries("Series 2", [], {stroke: {color: "green"}});
+        this.sensorChart.addSeries("Series 3", [], {stroke: {color: "purple"}});
+        this.sensorChart.render();
+      },
 
-          this.inherited(arguments);
+      postCreate: function () {
+        var self = this;
 
-          var store = new SensorDataStore({
-            target: "https://www.pulsation.eu:6984/alarmsandbox"
-          });
+        this.inherited(arguments);
 
-          var queryDb = function() {
-            if ((this.deviceId !== null) && (this.sensorId !== null)) {
-              return store.query({}, {}, {
-                options: {
-                  startkey: [self.deviceId, self.sensorId, null],
-                  endkey: [self.deviceId, self.sensorId + 1, null],
-                  inclusive_end : false
-                }
-              });
-            }
-          };
+        var store = new SensorDataStore({
+          target: "https://www.pulsation.eu:6984/alarmsandbox"
+        });
 
-          var updateChart = function(docs) {
-            var values = [[],[],[]];
-            docs.forEach(function (element) {
-              values[0].push(element.values[0]);
-              if (element.values[1]) {
-                values[1].push(element.values[1]);
-              }
-              if (element.values[2]) {
-                values[2].push(element.values[2]);
-              }
-            });
-            self.sensorChart.updateSeries("Series 1", values[0]);
-            self.sensorChart.updateSeries("Series 2", values[1]);
-            self.sensorChart.updateSeries("Series 3", values[2]);
-            self.sensorChart.render();
-          };
-
-          topic.subscribe("deviceId", function(deviceId) {
-            console.log("Device id set to "+ deviceId);
-            self.deviceId = deviceId;
-/*            store.query({}, {}, {
+        var queryDb = function() {
+          if ((this.deviceId !== null) && (this.sensorId !== null)) {
+            return store.query({}, {}, {
               options: {
                 startkey: [self.deviceId, self.sensorId, null],
-                endkey: [self.deviceId, self.sensorId + 1, null]
+                endkey: [self.deviceId, self.sensorId + 1, null],
+                inclusive_end : false
               }
-            }).then(updateChart);*/
-            queryDb().then(updateChart);
-          });
+            });
+          }
+        };
 
-          topic.subscribe("sensorId", function(sensorId) {
-            console.log("Sensor id set to "+ sensorId);
-            self.sensorId = sensorId;
-            queryDb().then(updateChart);
+        var updateChart = function(docs) {
+          var values = [[],[],[]];
+          docs.forEach(function (element) {
+            values[0].push(element.values[0]);
+            if (element.values[1]) {
+              values[1].push(element.values[1]);
+            }
+            if (element.values[2]) {
+              values[2].push(element.values[2]);
+            }
           });
-        }
+          self.sensorChart.updateSeries("Series 1", values[0]);
+          self.sensorChart.updateSeries("Series 2", values[1]);
+          self.sensorChart.updateSeries("Series 3", values[2]);
+          self.sensorChart.render();
+        };
+
+        topic.subscribe("deviceId", function(deviceId) {
+          console.log("Device id set to "+ deviceId);
+          self.deviceId = deviceId;
+          queryDb().then(updateChart);
+        });
+
+        topic.subscribe("sensorId", function(sensorId) {
+          console.log("Sensor id set to "+ sensorId);
+          self.sensorId = sensorId;
+          queryDb().then(updateChart);
+        });
+      }
     });
  });
