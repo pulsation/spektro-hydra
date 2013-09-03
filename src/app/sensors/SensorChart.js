@@ -35,7 +35,7 @@ define([
         this.inherited(arguments);
 
         var store = new SensorDataStore({
-          target: "https://www.pulsation.eu:6984/alarmsandbox"
+//          target: "https://www.pulsation.eu:6984/alarmsandbox"
         });
 
         var queryDb = function() {
@@ -64,13 +64,13 @@ define([
           self.sensorChart.render();
         };
 
-        topic.subscribe("deviceId", function(deviceId) {
+        topic.subscribe("spektro/deviceId", function(deviceId) {
           console.log("Device id set to "+ deviceId);
           self.deviceId = deviceId;
           queryDb().then(updateChart);
         });
 
-        topic.subscribe("sensorId", function(sensorId) {
+        topic.subscribe("spektro/sensorId", function(sensorId) {
           console.log("Sensor id set to "+ sensorId);
           self.sensorId = sensorId;
           queryDb().then(updateChart);

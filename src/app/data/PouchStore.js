@@ -1,8 +1,8 @@
 /**
  * Very simple dojo store for PouchDB.
  */
-define(["dojo/store/util/QueryResults", "dojo/_base/declare", "dojo/_base/lang", "dojo/store/util/SimpleQueryEngine", "dojo/Deferred", "http://download.pouchdb.com/pouchdb-nightly.js"],
-        function(QueryResults, declare, lang, SimpleQueryEngine, Deferred){
+define(["dojo/store/util/QueryResults", "dojo/_base/declare", "dojo/_base/lang", "dojo/store/util/SimpleQueryEngine", "dojo/Deferred", "dojo/topic", "http://download.pouchdb.com/pouchdb-nightly.js"],
+        function(QueryResults, declare, lang, SimpleQueryEngine, Deferred, topic){
  
     //  Declare the initial store
     return declare(null, {
@@ -16,9 +16,16 @@ define(["dojo/store/util/QueryResults", "dojo/_base/declare", "dojo/_base/lang",
         pouchQuery: null,
 
         constructor: function(options){
-            lang.mixin(this, options || {});
-            this.setTarget(this.target);
-            this.setPouchQuery(this.pouchQuery);
+          var self = this;
+
+          lang.mixin(this, options || {});
+          this.setTarget(this.target);
+          this.setPouchQuery(this.pouchQuery);
+          // FIXME: Separate from generic implementation
+          topic.subscribe("spektro/dsn", function(dsn) {
+            console.log("DSN set to " + dsn);
+            self.setTarget(dsn);
+          });
         },
         
         /**
@@ -90,13 +97,17 @@ define(["dojo/store/util/QueryResults", "dojo/_base/declare", "dojo/_base/lang",
                   );
                 }
               };
-
-          if (this.pouchQuery === null) {
-            this.pouch.allDocs({include_docs: true}, callback);
+          
+          if (this.pouch !== null) {
+            if (this.pouchQuery === null) {
+              this.pouch.allDocs({include_docs: true}, callback);
+            } else {
+              data = this.pouch.query(pouchQuery.view, pouchQuery.options, callback);
+            }
+            return deferred;
           } else {
-            data = this.pouch.query(pouchQuery.view, pouchQuery.options, callback);
+            return [];
           }
-          return deferred;
         },
 
         setData: function(data){

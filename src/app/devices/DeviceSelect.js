@@ -8,7 +8,7 @@ define(['dojo/_base/declare', 'dijit/form/Select', "dojo/data/ObjectStore", "doj
         // Data store
         var store = Observable(
           new DevicesStore({
-            target: "https://www.pulsation.eu:6984/alarmsandbox"
+//            target: "https://www.pulsation.eu:6984/alarmsandbox"
           })
         );
         this.setStore(
@@ -18,7 +18,7 @@ define(['dojo/_base/declare', 'dijit/form/Select', "dojo/data/ObjectStore", "doj
         );
 
         this.on("change", function () {
-          topic.publish("deviceId", this.get("value"));
+          topic.publish("spektro/deviceId", this.get("value"));
         });
       },
     });

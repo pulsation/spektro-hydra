@@ -1,4 +1,5 @@
-define(['dojo/_base/declare', 'dijit/registry', 'dijit/Dialog', 'dijit/form/TextBox', 'dijit/form/Button'], function (declare, registry, Dialog, TextBox, Button) {
+define(['dojo/_base/declare', 'dijit/registry', 'dijit/Dialog', 'dijit/form/TextBox', 'dijit/form/Button', 'dojo/topic'],
+       function (declare, registry, Dialog, TextBox, Button, topic) {
   return declare(Dialog, {
     title: "Login",
     style: "width: 300px",
@@ -30,7 +31,8 @@ define(['dojo/_base/declare', 'dijit/registry', 'dijit/Dialog', 'dijit/form/Text
       var passwdTextBox = new TextBox({
         name: "passwdTextBox",
         id: "passwdTextBox",
-        placeHolder: "Password"
+        placeHolder: "Password",
+        type: "password"
       });
       passwdTextBox.placeAt(registry.byId(this.id).containerNode);
 
@@ -46,13 +48,12 @@ define(['dojo/_base/declare', 'dijit/registry', 'dijit/Dialog', 'dijit/form/Text
           dsn += registry.byId("passwdTextBox").get('value');
           dsn += "@";
           dsn += registry.byId("serverTextBox").get('value');
-          dsn += "/";
+          dsn += ":6984/";
           dsn += registry.byId("dbTextBox").get('value');
-          console.log(dsn);
+          topic.publish('spektro/dsn', dsn);
         }
       });
       loginButton.placeAt(registry.byId(this.id).containerNode);
-      
     }
   });
 });
