@@ -13,3 +13,6 @@
 [submodule "src/pouchdb"]
 	path = src/pouchdb
 	url = https://github.com/daleharvey/pouchdb.git
+[submodule "src/dojo-pouchdb-store"]
+	path = src/dojo-pouchdb-store
+	url = https://github.com/pulsation/dojo-pouchdb-store.git
