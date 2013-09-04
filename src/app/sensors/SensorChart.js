@@ -94,13 +94,11 @@ define([
         };
 
         topic.subscribe("spektro/deviceId", function(deviceId) {
-          console.log("Device id set to "+ deviceId);
           self.deviceId = deviceId;
           queryDb().then(updateChart);
         });
 
         topic.subscribe("spektro/sensorId", function(sensorId) {
-          console.log("Sensor id set to "+ sensorId);
           self.sensorId = sensorId;
           queryDb().then(updateChart);
         });
