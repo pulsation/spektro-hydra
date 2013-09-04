@@ -14,6 +14,7 @@ define([
 
       deviceId: null,
       sensorId: null,
+      dataStore: null,
       
       buildRendering: function(){
         // create the DOM for this widget
@@ -29,18 +30,22 @@ define([
         this.sensorChart.render();
       },
 
+      setDataStore: function(store) {
+        this.dataStore = store;
+      },
+
       postCreate: function () {
         var self = this;
 
         this.inherited(arguments);
 
-        var store = new SensorDataStore({
-//          target: "https://www.pulsation.eu:6984/alarmsandbox"
+        topic.subscribe("spektro/dbConfigured", function(db) {
+          self.setDataStore(new SensorDataStore({target: db}));
         });
-
+        
         var queryDb = function() {
-          if ((this.deviceId !== null) && (this.sensorId !== null)) {
-            return store.query({}, {}, {
+          if ((this.deviceId !== null) && (this.sensorId !== null) && (self.dataStore !== null)) {
+            return self.dataStore.query({}, {}, {
               options: {
                 startkey: [self.deviceId, self.sensorId, null],
                 endkey: [self.deviceId, self.sensorId + 1, null],
