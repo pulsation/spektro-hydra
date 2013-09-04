@@ -1,5 +1,3 @@
-// the parser is only needed, if you want
-// to instantiate the widget declaratively (in markup)
 define([
     "dojo/_base/declare", "dojo/dom-construct", "dojo/ready", "dojo/_base/window",
     "dijit/_WidgetBase", "dojox/charting/Chart", "dojox/charting/plot2d/Lines", "dojox/charting/axis2d/Default", "dojo/topic",
