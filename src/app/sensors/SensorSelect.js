@@ -30,12 +30,32 @@ define(['dojo/_base/declare', 'dijit/form/Select', "dojo/data/ObjectStore", "doj
       postCreate: function () {
         var self = this;
 
-        this.inherited(arguments);
+        this.database = null;
 
+        this.inherited(arguments);
+        
         topic.subscribe("spektro/dbConfigured", function(db) {
+          this.database = db;
+        });
+
+        topic.subscribe("spektro/deviceId", function(deviceId) {
           self.setStore(
             new ObjectStore({
-              objectStore: Observable(new SensorsStore({target: db}))
+              objectStore: Observable(new SensorsStore({
+                target: this.database,
+                pouchQuery:  {
+                  view: "selector/sensors",
+                  options: {
+                    inclusive_end : false,
+                    group: true,
+                    reduce: true,
+                    startkey: [deviceId, null],
+                    endkey: [deviceId + 1, null]
+                    
+                  }
+                }
+
+              }))
             })
           );
         });
