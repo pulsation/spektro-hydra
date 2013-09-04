@@ -1,1 +1,1 @@
-Web frontend companion to Spektro Magnet.
+Web frontend companion for Spektro Magnet.
