@@ -28,7 +28,12 @@ define(['dojo/_base/declare', 'dijit/form/Select', "dojo/data/ObjectStore", "doj
     return declare(Select, {
       labelAttr: "name",
       postCreate: function () {
-        var self = this;
+        var self = this,
+        dispatchSelectedValue = function () {
+          return function () {
+            topic.publish("spektro/sensorId", self.get("value"));
+          };
+        };
 
         this.database = null;
 
@@ -60,14 +65,8 @@ define(['dojo/_base/declare', 'dijit/form/Select', "dojo/data/ObjectStore", "doj
           );
         });
 
-        this.on("change", function () {
-          topic.publish("spektro/sensorId", this.get("value"));
-        });
-
-        this.on("setStore", function () {
-          topic.publish("spektro/sensorId", this.get("value"));
-        });
-
+        this.on("change", dispatchSelectedValue());
+        this.on("setStore", dispatchSelectedValue());
       }
     });
   });
