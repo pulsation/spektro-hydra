@@ -4,8 +4,10 @@ define(['dojo/_base/declare', 'dijit/registry',  "dijit/layout/ContentPane", './
     postCreate: function () {
 
       new DeviceSelect().placeAt(registry.byId(this.id).containerNode);
+      /*
       new Button({label: "Sensors"}).placeAt(registry.byId(this.id).containerNode);
       new Button({label: "Location"}).placeAt(registry.byId(this.id).containerNode);
+      */
     }
   });
 });
