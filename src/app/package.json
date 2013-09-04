@@ -10,6 +10,10 @@
 	},
 	"description": "Hydra web frontend to spektro project.",
 	"licenses": [
+    {
+      "type": "AFLv2.1",
+      "url": "http://bugs.dojotoolkit.org/browser/dojo/trunk/LICENSE#L43"
+    },
 		{
 			"type": "BSD",
 			"url": "http://opensource.org/licenses/BSD-2-Clause"
