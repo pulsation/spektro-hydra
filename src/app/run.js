@@ -1,32 +1,37 @@
-/**
- * This file is used to reconfigure parts of the loader at runtime for this application. We've put this extra
- * configuration in a separate file, instead of adding it directly to index.html, because it contains options that
- * can be shared if the application is run on both the client and the server.
- *
- * If you aren't planning on running your app on both the client and the server, you could easily move this
- * configuration into index.html (as a dojoConfig object) if it makes your life easier.
+/* 
+ * Copyright (c) 2013, Philippe Sam-Long aka pulsation
+ * All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met: 
+ * 
+ * 1. Redistributions of source code must retain the above copyright notice, this
+ *    list of conditions and the following disclaimer. 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution. 
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 require({
-	// The base path for all packages and modules. If you don't provide this, baseUrl defaults to the directory
-	// that contains dojo.js. Since all packages are in the root, we just leave it blank. (If you change this, you
-	// will also need to update `app.profile.js`).
 	baseUrl: '',
 
-	// A list of packages to register. Strictly speaking, you do not need to register any packages,
-	// but you can't require "app" and get app/main.js if you do not register the "app" package (the loader will look
-	// for a module at <baseUrl>/app.js instead). Unregistered packages also cannot use the `map` feature, which
-	// might be important to you if you need to relocate dependencies. TL;DR, register all your packages all the time:
-	// it will make your life easier.
 	packages: [
-		// If you are registering a package that has an identical name and location, you can just pass a string
-		// instead, and it will configure it using that string for both the "name" and "location" properties. Handy!
 		'dojo',
 		'dijit',
 		'dojox',
 
-		// For reference, this is what a more verbose package declaration looks like.
 		{ name: 'app', location: 'app', map: {} }
 
 	]
-// Require `app`. This loads the main application module, `app/main`, since we registered the `app` package above.
 }, [ 'app' ]);

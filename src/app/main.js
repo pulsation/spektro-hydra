@@ -1,57 +1,35 @@
-/**
- * This file is the application's main JavaScript file. It is listed as a dependency in run.js and will automatically
- * load when run.js loads.
- *
- * Because this file has the special filename `main.js`, and because we've registered the `app` package in run.js,
- * whatever object this module returns can be loaded by other files simply by requiring `app` (instead of `app/main`).
- *
- * Our first dependency is to the `dojo/has` module, which allows us to conditionally execute code based on
- * configuration settings or environmental information. Unlike a normal conditional, these branches can be compiled
- * away by the build system; see `staticHasFeatures` in app.profile.js for more information.
- *
- * Our second dependency is to the special module `require`; this allows us to make additional require calls using
- * module IDs relative to this module within the body of the define callback.
- *
- * In all cases, whatever function is passed to define() is only invoked once, and the returned value is cached.
- *
- * More information about everything described about the loader throughout this file can be found at
- * <http://dojotoolkit.org/reference-guide/loader/amd.html>.
+/* 
+ * Copyright (c) 2013, Philippe Sam-Long aka pulsation
+ * All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met: 
+ * 
+ * 1. Redistributions of source code must retain the above copyright notice, this
+ *    list of conditions and the following disclaimer. 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution. 
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 define([ 'dojo/has', 'require' ], function (has, require) {
 	var app = {};
 
-	/**
-	 * This main.js file conditionally executes different code depending upon the host environment it is loaded in.
-	 * This is an increasingly common pattern when dealing with applications that run in different environments that
-	 * require different functionality (i.e. client/server or desktop/tablet/phone).
-	 */
 	if (has('host-browser')) {
-		/*
-		 * This require call's first dependency, `./Dialog`, uses a relative module identifier; you should use this
-		 * type of notation for dependencies *within* a package in order to ensure the package is fully portable. It
-		 * works like a path, where `./` refers to the current directory and `../` refers to the parent directory. If
-		 * you are referring to a module in a *different* package (like `dojo` or `dijit`), you should *not* use a
-		 * relative module identifier.
-		 *
-		 * The second dependency is a plugin dependency; in this case, it is a dependency on the special functionality
-		 * of the `dojo/domReady` plugin, which simply waits until the DOM is ready before resolving.
-		 * The `!` after the module name indicates you want to use special plugin functionality; if you were to
-		 * require just `dojo/domReady`, it would load that module just like any other module, without the special
-		 * plugin functionality.
-		 */
 		require([ './MainLayout', 'dojo/domReady!' ], function (MainLayout) {
-			app.dialog = new MainLayout().placeAt(document.body);
-
-			// It is important to remember to always call startup on widgets after you have added them to the DOM.
-			// It will not hurt if you do it twice, but things will often not work right if you forget to do it.
-			app.dialog.startup();
-
-			// And now we just show the dialog to demonstrate that, yes, the example app has loaded successfully.
-			//app.dialog.show();
+			app.mainLayout = new MainLayout().placeAt(document.body);
+			app.mainLayout.startup();
 		});
-	}
-	else {
-		// TODO: Eventually, the Boilerplate will actually have a useful server implementation here :)
-		console.log('Hello from the server!');
 	}
 });
