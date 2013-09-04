@@ -1,4 +1,4 @@
-define(['dojo/_base/declare', 'dijit/registry', 'dijit/Dialog', 'dijit/form/TextBox', 'dijit/form/Button', 'dojo/topic'],
+define(['dojo/_base/declare', 'dijit/registry', 'dijit/Dialog', 'dijit/form/TextBox', 'dijit/form/Button', 'dojo/topic', "http://download.pouchdb.com/pouchdb-nightly.js"],
        function (declare, registry, Dialog, TextBox, Button, topic) {
   return declare(Dialog, {
     title: "Login",
@@ -43,14 +43,18 @@ define(['dojo/_base/declare', 'dijit/registry', 'dijit/Dialog', 'dijit/form/Text
         onClick: function () {
           var dsn = "https://";
 
-          dsn += registry.byId("loginTextBox").get('value');
+/*          dsn += registry.byId("loginTextBox").get('value');
           dsn += ":";
           dsn += registry.byId("passwdTextBox").get('value');
-          dsn += "@";
+          dsn += "@";*/
           dsn += registry.byId("serverTextBox").get('value');
           dsn += ":6984/";
           dsn += registry.byId("dbTextBox").get('value');
-          topic.publish('spektro/dsn', dsn);
+          topic.publish('spektro/dbConfigured', 
+                        new PouchDB(dsn, {auth: {
+                          username: registry.byId("loginTextBox").get('value'),
+                          password: registry.byId("passwdTextBox").get('value')
+                        }}));
         }
       });
       loginButton.placeAt(registry.byId(this.id).containerNode);
