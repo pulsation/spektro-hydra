@@ -11,7 +11,6 @@ define (["dojo/_base/declare", "./PouchStore", "dojo/topic"],
               var self = this;
 
               topic.subscribe("spektro/dbConfigured", function(db) {
-                console.log("db set to " + db);
                 self.setTarget(db);
               });
             }

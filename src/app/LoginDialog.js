@@ -43,10 +43,6 @@ define(['dojo/_base/declare', 'dijit/registry', 'dijit/Dialog', 'dijit/form/Text
         onClick: function () {
           var dsn = "https://";
 
-/*          dsn += registry.byId("loginTextBox").get('value');
-          dsn += ":";
-          dsn += registry.byId("passwdTextBox").get('value');
-          dsn += "@";*/
           dsn += registry.byId("serverTextBox").get('value');
           dsn += ":6984/";
           dsn += registry.byId("dbTextBox").get('value');
