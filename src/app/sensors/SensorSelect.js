@@ -63,6 +63,11 @@ define(['dojo/_base/declare', 'dijit/form/Select', "dojo/data/ObjectStore", "doj
         this.on("change", function () {
           topic.publish("spektro/sensorId", this.get("value"));
         });
+
+        this.on("setStore", function () {
+          topic.publish("spektro/sensorId", this.get("value"));
+        });
+
       }
     });
   });
